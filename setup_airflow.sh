@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 ## Airflow set up ##
 cd airflow
-mkdir -p config data logs plugins
+mkdir -p config logs plugins
 docker compose build
 docker compose up airflow-init
 docker compose up -d
