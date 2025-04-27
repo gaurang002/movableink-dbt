@@ -19,15 +19,24 @@ def safe_stream_ndjson(path):
             except json.JSONDecodeError as e:
                 print(f"Error decoding JSON at line {idx}: {e}")
 
-def get_all_files(directory):
-    file_paths = []
+def get_all_files_info(directory):
+    files_metadata = []
     for root, dirs, files in os.walk(directory):
         for file in files:
-            file_paths.append(os.path.join(root, file))
-    return file_paths
+            file_path = os.path.join(root, file)
+            stat_info = os.stat(file_path)
+            files_metadata.append({
+                'file_name': file,
+                'full_path': file_path,
+                'size_bytes': stat_info.st_size,
+                'created_at': datetime.fromtimestamp(stat_info.st_ctime),
+                'modified_at': datetime.fromtimestamp(stat_info.st_mtime),
+            })
+    return files_metadata
 
 def load_json_bulk_to_postgres(file_dir):
-    files = get_all_files(file_dir)
+    files_info = get_all_files_info(file_dir) # Other information will be used for designing Incremental Logic.
+    files = [i.get('full_path') for i in files_info]
     #path = '/opt/airflow/dags/data/sample_data.json'
     for file in files:
         print(file)
@@ -69,7 +78,7 @@ default_args = {
 with DAG(
     dag_id='load_json_data',
     default_args=default_args,
-    schedule_interval=None,
+    schedule_interval="0 3 * * *",
     max_active_runs=1,
     dagrun_timeout=timedelta(minutes=2),
     catchup=False,
