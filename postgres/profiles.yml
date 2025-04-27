@@ -1,0 +1,12 @@
+postgres:
+  outputs:
+    dev:
+      dbname: postgres
+      host: localhost
+      pass: postgres
+      port: 5434
+      schema: public
+      threads: 1
+      type: postgres
+      user: postgres
+  target: dev
