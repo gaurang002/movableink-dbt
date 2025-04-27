@@ -41,6 +41,7 @@ As an interviewee, one need to present end to end data solution using given samp
     - DWH Conn - postgresql://postgres:postgres@localhost:5434/postgres
 - Set up Dbt (Note: postgres folder is dbt project. Name can be better and left for future improvement)
   - `./setup_dbt.sh`
+- [ONLY IF NEEDED] To destroy airflow - `./cleanup_airflow.sh`
 - After successful set up. Ond can verify by following:
 - ```
   % docker ps
@@ -59,7 +60,7 @@ As an interviewee, one need to present end to end data solution using given samp
 - <p align="center">
   <img src="images/airflow.png" width="400" alt="Architecture Diagram">
 </p>
-- To destroy airflow - `./cleanup_airflow.sh`
+
 
 ## Technologies
 
@@ -78,13 +79,19 @@ As an interviewee, one need to present end to end data solution using given samp
   - Had to include dwh_postgres and pgadmin services in same airflow docker-compose file for smoother communication among docker containers. 
 - Transformation
   - No date and time dimension creation.
-  - No Dimension model created due to low volume of sample data and just to keep it simple for interview purpose.
+  - No Dimension model created due to low volume of sample data and lack of information about metadata for campaign, company, user etc. Also, wanted to keep the solution simple for interview purpose.
+  - Potential Dimensional Model
+  - <p align="center">
+  <img src="images/star_schema.png" width="400" alt="Architecture Diagram">
+</p>
 - Misc
   - Single node airflow and postgres deployment.
   - No distributed reads/writes from/to database.
+  - No Dbt integration with Airflow.
 
 ## Insights
 - Created one view in silver schema for each insight asked.
+- Some of the column names shows on the sample output of exercise not making sense. But keeping the output as it is shown in exercise.
 - Usage Reporting
   - query -> `select * from silver.usage_reporting;`
 - Most Valuable Time of Day

@@ -2,6 +2,7 @@ from airflow import DAG
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 from airflow.operators.python import PythonOperator
+from airflow.operators.bash import BashOperator
 from datetime import datetime
 from datetime import timedelta
 from psycopg2.extras import execute_values, execute_batch
@@ -104,6 +105,10 @@ with DAG(
         python_callable=load_json_bulk_to_postgres,
         op_args=["/opt/airflow/dags/data/"],
     )
+
+    '''
+    TODO: Dbt integration
+    '''
 
 
 load_bronze_tables
