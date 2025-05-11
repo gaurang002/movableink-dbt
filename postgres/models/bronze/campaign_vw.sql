@@ -36,3 +36,4 @@ select 	request_uuid,
 		coalesce(payload->>'weather_temperature', '0')::bigint as weather_temperature,
 		coalesce(payload->>'weather_temperature_f', '0')::bigint as weather_temperature_f
 from   bronze.campaign
+where <date>
